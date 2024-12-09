@@ -13,7 +13,7 @@ public partial class Employee
 
     public string? Department { get; set; }
 
-    public DateOnly? HireDate { get; set; }
+    public DateTime? HireDate { get; set; }
 
     public virtual User? User { get; set; }
 

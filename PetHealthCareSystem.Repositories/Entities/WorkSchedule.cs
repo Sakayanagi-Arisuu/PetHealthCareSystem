@@ -11,7 +11,7 @@ public partial class WorkSchedule
 
     public int? VeterinarianId { get; set; }
 
-    public DateOnly? Date { get; set; }
+    public DateTime? Date { get; set; }
 
     public TimeOnly? StartTime { get; set; }
 

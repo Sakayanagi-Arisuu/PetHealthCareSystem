@@ -15,7 +15,7 @@ public partial class User
 
     public string? Address { get; set; }
 
-    public DateOnly? DateOfBirth { get; set; }
+    public DateTime? DateOfBirth { get; set; }
 
     public virtual ICollection<Account> Accounts { get; set; } = new List<Account>();
 

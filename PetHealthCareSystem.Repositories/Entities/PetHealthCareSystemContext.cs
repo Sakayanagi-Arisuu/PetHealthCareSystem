@@ -43,9 +43,9 @@ public partial class PetHealthCareSystemContext : DbContext
 
     public virtual DbSet<WorkSchedule> WorkSchedules { get; set; }
 
-//    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-//#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-//        => optionsBuilder.UseSqlServer("Data Source=DESKTOP-6OVLRPL;Initial Catalog=PetHealthCareSystem;Integrated Security=True;Trust Server Certificate=True");
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
+        => optionsBuilder.UseSqlServer("Data Source=DESKTOP-6OVLRPL;Initial Catalog=PetHealthCareSystem;Integrated Security=True;Trust Server Certificate=True");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -133,6 +133,7 @@ public partial class PetHealthCareSystemContext : DbContext
             entity.Property(e => e.Department)
                 .HasMaxLength(50)
                 .IsUnicode(false);
+            entity.Property(e => e.HireDate).HasColumnType("datetime");
             entity.Property(e => e.Position)
                 .HasMaxLength(50)
                 .IsUnicode(false);
@@ -150,8 +151,10 @@ public partial class PetHealthCareSystemContext : DbContext
             entity.ToTable("HealProcess");
 
             entity.Property(e => e.HealProcessId).HasColumnName("HealProcessID");
+            entity.Property(e => e.EndDate).HasColumnType("datetime");
             entity.Property(e => e.Notes).HasColumnType("text");
             entity.Property(e => e.PetId).HasColumnName("PetID");
+            entity.Property(e => e.StartDate).HasColumnType("datetime");
             entity.Property(e => e.Status)
                 .HasMaxLength(20)
                 .IsUnicode(false);
@@ -177,6 +180,7 @@ public partial class PetHealthCareSystemContext : DbContext
             entity.Property(e => e.PetId).HasColumnName("PetID");
             entity.Property(e => e.Treatment).HasColumnType("text");
             entity.Property(e => e.VeterinarianId).HasColumnName("VeterinarianID");
+            entity.Property(e => e.VisitDate).HasColumnType("datetime");
 
             entity.HasOne(d => d.Pet).WithMany(p => p.MedicalHistories)
                 .HasForeignKey(d => d.PetId)
@@ -217,6 +221,7 @@ public partial class PetHealthCareSystemContext : DbContext
                 .HasMaxLength(100)
                 .IsUnicode(false);
             entity.Property(e => e.CustomerId).HasColumnName("CustomerID");
+            entity.Property(e => e.DateOfBirth).HasColumnType("datetime");
             entity.Property(e => e.Gender)
                 .HasMaxLength(10)
                 .IsUnicode(false);
@@ -294,6 +299,7 @@ public partial class PetHealthCareSystemContext : DbContext
 
             entity.Property(e => e.UserId).HasColumnName("UserID");
             entity.Property(e => e.Address).HasColumnType("text");
+            entity.Property(e => e.DateOfBirth).HasColumnType("datetime");
             entity.Property(e => e.Email)
                 .HasMaxLength(100)
                 .IsUnicode(false);
@@ -330,6 +336,7 @@ public partial class PetHealthCareSystemContext : DbContext
             entity.ToTable("WorkSchedule");
 
             entity.Property(e => e.ScheduleId).HasColumnName("ScheduleID");
+            entity.Property(e => e.Date).HasColumnType("datetime");
             entity.Property(e => e.EmployeeId).HasColumnName("EmployeeID");
             entity.Property(e => e.VeterinarianId).HasColumnName("VeterinarianID");
 

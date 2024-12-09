@@ -11,7 +11,7 @@ public partial class MedicalHistory
 
     public int? VeterinarianId { get; set; }
 
-    public DateOnly? VisitDate { get; set; }
+    public DateTime? VisitDate { get; set; }
 
     public string? Diagnosis { get; set; }
 
