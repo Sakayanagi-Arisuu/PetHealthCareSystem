@@ -9,10 +9,10 @@ namespace PetHealthCareSystem.Repositories.Interfaces
 {
     public interface IEmployeeRepository
     {
-        Task<List<Employee>> GetAllEmployee();
-        Boolean DelEmployee (int id);
-        Boolean DelEmployee (Employee employee);
-        Boolean AddEmployee (Employee employee);
-        Boolean UpdateEmployee (Employee employee);
+        Task<List<Employee>> GetAllEmployeeAsync();
+        Task<bool> DelEmployeeAsync(int id);
+        Task<bool> DelEmployeeAsync (Employee employee);
+        Task<bool> AddEmployeeAsync (Employee employee);
+        Task<bool> UpdateEmployeeAsync(Employee employee);
     }
 }

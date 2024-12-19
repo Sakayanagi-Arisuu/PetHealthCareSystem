@@ -9,10 +9,10 @@ namespace PetHealthCareSystem.Repositories.Interfaces
 {
     public interface IWorkScheduleRepository
     {
-        Task<List<WorkSchedule>> GetAllWorkSchedule();
-        Boolean DelWorkSchedule(int id);
-        Boolean DeleteWorkSchedule(WorkSchedule workSchedule);
-        Boolean UpdateWorkSchedule(WorkSchedule workSchedule);
-        Boolean AddWorkSchedule (WorkSchedule workSchedule);
+        Task<List<WorkSchedule>> GetAllWorkScheduleAsync();
+        Task<bool> DelWorkScheduleAsync(int id);
+        Task<bool> DeleteWorkScheduleAsync(WorkSchedule workSchedule);
+        Task<bool> UpdateWorkScheduleAsync(WorkSchedule workSchedule);
+        Task<bool> AddWorkScheduleAsync (WorkSchedule workSchedule);
     }
 }

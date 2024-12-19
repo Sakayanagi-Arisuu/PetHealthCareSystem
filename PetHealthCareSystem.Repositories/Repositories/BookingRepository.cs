@@ -5,34 +5,91 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using Microsoft.EntityFrameworkCore;
 namespace PetHealthCareSystem.Repositories.Repositories
 {
     public class BookingRepository : IBookingRepository
     {
-        public bool AddBooking(Booking booking)
+        private readonly PetHealthCareSystemContext _DbContext;
+        public BookingRepository(PetHealthCareSystemContext dbcontext)
         {
-            throw new NotImplementedException();
+            _DbContext = dbcontext;
+        }
+        public async Task<bool>AddBookingAsync(Booking booking)
+        {
+            try
+            {
+                await _DbContext.Bookings.AddAsync(booking);
+                await _DbContext.SaveChangesAsync();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
-        public bool DelBooking(int id)
+        public async Task<bool> DelBookingAsync(int id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var objDel = await _DbContext.Bookings.FindAsync(id);
+                if (objDel != null)
+                {
+                    _DbContext.Bookings.Remove(objDel);
+                    await _DbContext.SaveChangesAsync();
+                    return true;
+                }
+                return false;
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException($"Error deleting booking: {ex.Message}", ex);
+            }
         }
 
-        public bool DelBooking(Booking booking)
+        public async Task<bool> DelBookingAsync(Booking booking)
         {
-            throw new NotImplementedException();
+            try
+            {
+                _DbContext.Bookings.Remove(booking);
+                await _DbContext.SaveChangesAsync();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
-        public Task<List<Booking>> GetAllBooking()
+        public async Task<List<Booking>> GetAllBookingAsync()
         {
-            throw new NotImplementedException();
+            return await _DbContext.Bookings
+                .Include(b => b.Customer)
+                .Include(b => b.Pet)
+                .Include(b => b.Room)
+                .Include(b => b.Veterinarian)
+                .Include(b => b.Payments)
+                .ToListAsync();
         }
 
-        public bool UpdateBooking(Booking booking)
+        public async Task<bool> UpdateBookingAsync(Booking booking)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var existingBooking = await _DbContext.Bookings.FindAsync(booking.BookingId);
+                if (existingBooking != null)
+                {
+                    _DbContext.Entry(existingBooking).CurrentValues.SetValues(booking);
+                    await _DbContext.SaveChangesAsync();
+                    return true;
+                }
+                return false;
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 }

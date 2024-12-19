@@ -23,7 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\PetHealthCareSystem.Repositories\PetHealthCareSystem.Repositories.csproj" />
+    <ProjectReference Include="..\PetHealthCareSystem.Services\PetHealthCareSystem.Services.csproj" />
   </ItemGroup>
 
 </Project>

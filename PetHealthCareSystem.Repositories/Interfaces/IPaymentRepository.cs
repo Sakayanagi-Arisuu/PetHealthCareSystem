@@ -9,10 +9,10 @@ namespace PetHealthCareSystem.Repositories.Interfaces
 {
     public interface IPaymentRepository
     {
-        Task<List<Payment>> GetAllPayment();
-        Boolean DelPayment (int id);
-        Boolean DelPayment (Payment payment);
-        Boolean AddPayment (Payment payment);
-        Boolean UpdatePayment (Payment payment);
+        Task<List<Payment>> GetAllPaymentAsync();
+        Task<bool> DelPaymentAsync (int id);
+        Task<bool> DelPaymentAsync (Payment payment);
+        Task<bool> AddPaymentAsync (Payment payment);
+        Task<bool> UpdatePaymentAsync (Payment payment);
     }
 }

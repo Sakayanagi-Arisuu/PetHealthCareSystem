@@ -9,10 +9,10 @@ namespace PetHealthCareSystem.Repositories.Interfaces
 {
     public interface IUserRepository
     {
-        Task<List<User>> GetAllUser();
-        Boolean DelUser (int id);
-        Boolean AddUser (User user);
-        Boolean DelUser (User user);
-        Boolean UpdateUser (User user);
+        Task<List<User>> GetAllUserAsync();
+        Task<bool> DelUserAsync (int id);
+        Task<bool> AddUserAsync (User user);
+        Task<bool> DelUserAsync (User user);
+        Task<bool> UpdateUserAsync (User user);
     }
 }

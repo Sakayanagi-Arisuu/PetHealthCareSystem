@@ -10,27 +10,27 @@ namespace PetHealthCareSystem.Repositories.Repositories
 {
     public class AccountRepository : IAccountRepository
     {
-        public bool AddAccount(Account account)
+        public Task<bool> AddAccountAsync(Account account)
         {
             throw new NotImplementedException();
         }
 
-        public bool DelAccount(int id)
+        public Task<bool> DelAccountAsync(int id)
         {
             throw new NotImplementedException();
         }
 
-        public bool DelAccount(Account account)
+        public Task<bool> DelAccountAsync(Account account)
         {
             throw new NotImplementedException();
         }
 
-        public Task<List<Account>> GetAllAccount()
+        public Task<List<Account>> GetAllAccountAsync()
         {
             throw new NotImplementedException();
         }
 
-        public bool UpdateAccount(Account account)
+        public Task<bool> UpdateAccountAsync(Account account)
         {
             throw new NotImplementedException();
         }

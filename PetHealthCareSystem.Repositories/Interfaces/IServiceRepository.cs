@@ -9,10 +9,10 @@ namespace PetHealthCareSystem.Repositories.Interfaces
 {
     public interface IServiceRepository
     {
-        Task<List<Service>> GetAllService();
-        Boolean DelService(int id);
-        Boolean DeleteService(Service service);
-        Boolean AddService (Service service);
-        Boolean UpdateService (Service service);
+        Task<List<Service>> GetAllServiceAsync();
+        Task<bool> DelServiceAsync(int id);
+        Task<bool> DelServiceAsync(Service service);
+        Task<bool> AddServiceAsync (Service service);
+        Task<bool> UpdateServiceAsync (Service service);
     }
 }

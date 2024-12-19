@@ -25,7 +25,7 @@ namespace PetHealthCareSystem.Repositories.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<List<Customer>> GetAllCustomer()
+        public Task<List<Customer>> GetAllCustomerAsync()
         {
             throw new NotImplementedException();
         }

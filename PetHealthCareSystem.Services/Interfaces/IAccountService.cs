@@ -4,15 +4,16 @@ using System.Linq;
 using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
+using PetHealthCareSystem.Repositories.Entities;
 
 namespace PetHealthCareSystem.Services.Interfaces
 {
-    public interface IAccountRepository
+    public interface IAccountService
     {
-        Task<List<Account>> GetAllAccount();
-        Boolean DelAccount(int id);
-        Boolean DelAccount(Account account);
-        Boolean AddAccount(Account account);
-        Boolean UpdateAccount(Account account);
+        Task<List<Account>> GetAllAccountAsync();
+        Task<bool> DelAccountAsync(int id);
+        Task<bool> DelAccountAsync(Account account);
+        Task<bool> AddAccountAsync(Account account);
+        Task<bool> UpdateAccountAsync(Account account);
     }
 }

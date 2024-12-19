@@ -9,10 +9,10 @@ namespace PetHealthCareSystem.Repositories.Interfaces
 {
     public interface IRoomRepository
     {
-        Task<List<Room>> GetAllRoom();
-        Boolean DelRoom(int id);
-        Boolean DeleteRoom(Room room);
-        Boolean AddRoom(Room room);
-        Boolean UpdateRoom(Room room);
+        Task<List<Room>> GetAllRoomAsync();
+        Task<bool> DelRoomAsync(int id);
+        Task<bool> DeleteRoomAsync(Room room);
+        Task<bool> AddRoomAsync (Room room);
+        Task<bool> UpdateRoomAsync(Room room);
     }
 }

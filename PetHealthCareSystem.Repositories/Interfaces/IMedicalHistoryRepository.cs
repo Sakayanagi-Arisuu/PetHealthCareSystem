@@ -9,10 +9,10 @@ namespace PetHealthCareSystem.Repositories.Interfaces
 {
     public interface IMedicalHistoryRepository
     {
-        Task<List<MedicalHistory>> GetAllMedicalHistory();
-        Boolean DelMedicalHistory (int id);
-        Boolean DelMedicalHistory (MedicalHistory history);
-        Boolean AddMedicalHistory (MedicalHistory history);
-        Boolean UpdateMedicalHistory (MedicalHistory history);
+        Task<List<MedicalHistory>> GetAllMedicalHistoryAsync();
+        Task<bool> DelMedicalHistoryAsync (int id);
+        Task<bool> DelMedicalHistoryAsync (MedicalHistory history);
+        Task<bool> AddMedicalHistoryAsync (MedicalHistory history);
+        Task<bool> UpdateMedicalHistoryAsync (MedicalHistory history);
     }
 }

@@ -9,10 +9,10 @@ namespace PetHealthCareSystem.Repositories.Interfaces
 {
     public interface IHealProcessRepository
     {
-        Task<List<HealProcess>> GetAllHealProcess();
-        Boolean DelHealProcessbyId(int id);
-        Boolean DelHealProcess (HealProcess healProcess);
-        Boolean AddHealProcess(HealProcess healProcess);
-        Boolean UpdateHealProcess (HealProcess healProcess);
+        Task<List<HealProcess>> GetAllHealProcessAsync();
+        Task<bool> DelHealProcessAsync(int id);
+        Task<bool> DelHealProcessAsync (HealProcess healProcess);
+        Task<bool> AddHealProcessAsync (HealProcess healProcess);
+        Task<bool> UpdateHealProcessAsync (HealProcess healProcess);
     }
 }

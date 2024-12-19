@@ -9,10 +9,10 @@ namespace PetHealthCareSystem.Repositories.Interfaces
 {
     public interface IRatingRepository
     {
-        Task<List<Rating>> GetAllRating();
-        Boolean DelRating(int id);
-        Boolean DelRating (Rating rating);
-        Boolean AddRating(Rating rating);
-        Boolean UpdateRating(Rating rating);
+        Task<List<Rating>> GetAllRatingAsync();
+        Task<bool> DelRatingAsync(int id);
+        Task<bool> DelRatingAsync (Rating rating);
+        Task<bool> AddRatingAsync (Rating rating);
+        Task<bool> UpdateRatingAsync (Rating rating);
     }
 }

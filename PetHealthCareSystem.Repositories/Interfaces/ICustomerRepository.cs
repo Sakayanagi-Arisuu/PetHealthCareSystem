@@ -9,10 +9,10 @@ namespace PetHealthCareSystem.Repositories.Interfaces
 {
     public interface ICustomerRepository
     {
-        Task<List<Customer>> GetAllCustomer();
-        Boolean DelCustomer (int  id);
-        Boolean DelCustomer (Customer customer);
-        Boolean AddCustomer (Customer customer);
-        Boolean UpdateCustomer (Customer customer);
+        Task<List<Customer>> GetAllCustomerAsync();
+        Task<bool> DelCustomerAsync(int id);
+        Task<bool> DelCustomerAsync(Customer customer);
+        Task<bool> AddCustomerAsync (Customer customer);
+        Task<bool> UpdateCustomerAsync(Customer customer);
     }
 }

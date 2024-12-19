@@ -9,10 +9,10 @@ namespace PetHealthCareSystem.Repositories.Interfaces
 {
     public interface IBookingRepository
     {
-        Task<List<Booking>> GetAllBooking();
-        Boolean DelBooking (int id);
-        Boolean DelBooking (Booking booking);
-        Boolean AddBooking (Booking booking);
-        Boolean UpdateBooking (Booking booking);
+        Task<List<Booking>> GetAllBookingAsync();
+        Task <bool> DelBookingAsync (int id);
+        Task<bool> DelBookingAsync(Booking booking);
+        Task<bool> AddBookingAsync(Booking booking);
+        Task<bool> UpdateBookingAsync (Booking booking);
     }
 }

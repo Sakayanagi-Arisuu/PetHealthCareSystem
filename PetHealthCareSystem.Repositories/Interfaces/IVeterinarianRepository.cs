@@ -9,10 +9,10 @@ namespace PetHealthCareSystem.Repositories.Interfaces
 {
     public interface IVeterinarianRepository
     {
-        Task<List<Veterinarian>> GetAllVeterinarian();
-        Boolean DelVeterinarian(int id);
-        Boolean DeleteVeterinarian(Veterinarian veterinarian);
-        Boolean AddVeterinarian(Veterinarian veterinarian);
-        Boolean UpdateVeterinarian(Veterinarian veterinarian);
+        Task<List<Veterinarian>> GetAllVeterinarianAsync();
+        Task<bool> DelVeterinarianAsync(int id);
+        Task<bool> DeleteVeterinarianAsync(Veterinarian veterinarian);
+        Task<bool> AddVeterinarianAsync(Veterinarian veterinarian);
+        Task<bool> UpdateVeterinarianAsync(Veterinarian veterinarian);
     }
 }
