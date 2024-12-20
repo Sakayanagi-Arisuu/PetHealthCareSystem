@@ -1,4 +1,5 @@
-﻿using PetHealthCareSystem.Repositories.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using PetHealthCareSystem.Repositories.Entities;
 using PetHealthCareSystem.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -10,29 +11,83 @@ namespace PetHealthCareSystem.Repositories.Repositories
 {
     public class CustomerRepository : ICustomerRepository
     {
-        public bool AddCustomer(Customer customer)
+        private readonly PetHealthCareSystemContext _DbContext;
+        public CustomerRepository(PetHealthCareSystemContext dbcontext)
         {
-            throw new NotImplementedException();
+            _DbContext = dbcontext;
+        }
+        public async Task<bool> AddCustomerAsync(Customer customer)
+        {
+            try
+            {
+                await _DbContext.Customers.AddAsync(customer);
+                await _DbContext.SaveChangesAsync();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
-        public bool DelCustomer(int id)
+        public async Task<bool> DelCustomerAsync(int id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var objDel = await _DbContext.Customers.FindAsync(id);
+                if (objDel != null)
+                {
+                    _DbContext.Customers.Remove(objDel);
+                    await _DbContext.SaveChangesAsync();
+                    return true;
+                }
+                return false;
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException($"Error deleting booking: {ex.Message}", ex);
+            }
         }
 
-        public bool DelCustomer(Customer customer)
+        public async Task<bool> DelCustomerAsync(Customer customer)
         {
-            throw new NotImplementedException();
+            try
+            {
+                _DbContext.Customers.Remove(customer);
+                await _DbContext.SaveChangesAsync();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
-        public Task<List<Customer>> GetAllCustomerAsync()
+        public async Task<List<Customer>> GetAllCustomerAsync()
         {
-            throw new NotImplementedException();
+            return await _DbContext.Customers
+                .Include(c => c.User)
+                .ToListAsync();
         }
 
-        public bool UpdateCustomer(Customer customer)
+        public async Task<bool> UpdateCustomerAsync(Customer customer)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var existingCustomer = await _DbContext.Customers.FindAsync(customer.CustomerId);
+                if (existingCustomer != null)
+                {
+                    _DbContext.Entry(existingCustomer).CurrentValues.SetValues(customer);
+                    await _DbContext.SaveChangesAsync();
+                    return true;
+                }
+                return false;
+            }
+            catch
+            {
+                Console.WriteLine($"Lỗi, không thể cập nhật: ");
+                return false;
+            }
         }
     }
 }
