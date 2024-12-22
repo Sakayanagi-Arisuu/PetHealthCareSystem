@@ -45,7 +45,7 @@ namespace PetHealthCareSystem.Repositories.Repositories
             }
             catch (Exception ex)
             {
-                throw new InvalidOperationException($"Error deleting booking: {ex.Message}", ex);
+                throw new InvalidOperationException($"Error deleting customer: {ex.Message}", ex);
             }
         }
 

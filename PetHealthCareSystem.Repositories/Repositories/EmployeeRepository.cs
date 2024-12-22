@@ -1,4 +1,5 @@
-﻿using PetHealthCareSystem.Repositories.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using PetHealthCareSystem.Repositories.Entities;
 using PetHealthCareSystem.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -10,29 +11,83 @@ namespace PetHealthCareSystem.Repositories.Repositories
 {
     public class EmployeeRepository : IEmployeeRepository
     {
-        public bool AddEmployee(Employee employee)
+        private readonly PetHealthCareSystemContext _DbContext;
+        public EmployeeRepository(PetHealthCareSystemContext dbcontext)
         {
-            throw new NotImplementedException();
+            _DbContext = dbcontext;
+        }
+        public async Task<bool> AddEmployeeAsync(Employee employee)
+        {
+            try
+            {
+                await _DbContext.Employees.AddAsync(employee);
+                await _DbContext.SaveChangesAsync();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
-        public bool DelEmployee(int id)
+        public async Task<bool> DelEmployeeAsync(int id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var objDel = await _DbContext.Employees.FindAsync(id);
+                if (objDel != null)
+                {
+                    _DbContext.Employees.Remove(objDel);
+                    await _DbContext.SaveChangesAsync();
+                    return true;
+                }
+                return false;
+            }
+            catch(Exception ex)
+            {
+                throw new InvalidOperationException($"Error deleting booking: {ex.Message}", ex);
+            }
         }
 
-        public bool DelEmployee(Employee employee)
+        public async Task<bool> DelEmployeeAsync(Employee employee)
         {
-            throw new NotImplementedException();
+            try
+            {
+                _DbContext.Employees.Remove(employee);
+                await _DbContext.SaveChangesAsync();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
-        public Task<List<Employee>> GetAllEmployee()
+        public async Task<List<Employee>> GetAllEmployeeAsync()
         {
-            throw new NotImplementedException();
+            return await _DbContext.Employees
+                .Include(e => e.User)
+                .ToListAsync();
         }
 
-        public bool UpdateEmployee(Employee employee)
+        public async Task<bool> UpdateEmployeeAsync(Employee employee)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var existingEmployee = await _DbContext.Employees.FindAsync(employee.EmployeeId);
+                if (existingEmployee != null)
+                {
+                    _DbContext.Entry(existingEmployee).CurrentValues.SetValues(employee);
+                    await _DbContext.SaveChangesAsync();
+                    return true;
+                }
+                return false;
+            }
+            catch
+            {
+                Console.WriteLine($"Lỗi, không thể cập nhật: ");
+                return false;
+            }
         }
     }
 }

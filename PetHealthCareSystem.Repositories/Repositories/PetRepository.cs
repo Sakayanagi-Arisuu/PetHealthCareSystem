@@ -1,4 +1,5 @@
-﻿using PetHealthCareSystem.Repositories.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using PetHealthCareSystem.Repositories.Entities;
 using PetHealthCareSystem.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -10,29 +11,83 @@ namespace PetHealthCareSystem.Repositories.Repositories
 {
     public class PetRepository : IPetRepository
     {
-        public bool AddPet(Pet pet)
+        private readonly PetHealthCareSystemContext _DbContext;
+        public PetRepository(PetHealthCareSystemContext dbcontext)
         {
-            throw new NotImplementedException();
+            _DbContext = dbcontext;
+        }
+        public async Task<bool> AddPetAsync(Pet pet)
+        {
+            try
+            {
+                await _DbContext.Pets.AddAsync(pet);
+                await _DbContext.SaveChangesAsync();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
-        public bool DeletePet(Pet pet)
+        public async Task<bool> DelPetAsync(int id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var objDel = await _DbContext.Pets.FindAsync(id);
+                if (objDel != null)
+                {
+                    _DbContext.Pets.Remove(objDel);
+                    await _DbContext.SaveChangesAsync();
+                    return true;
+                }
+                return false;
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException($"Errol Delete Pet: {ex.Message}", ex);
+            }
         }
 
-        public bool DelPet(int id)
+        public async Task<bool> DelPetAsync(Pet pet)
         {
-            throw new NotImplementedException();
+            try
+            {
+                _DbContext.Pets.Remove(pet);
+                await _DbContext.SaveChangesAsync();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
-        public Task<List<Pet>> GetAllPet()
+        public async Task<List<Pet>> GetAllPetAsync()
         {
-            throw new NotImplementedException();
+            return await _DbContext.Pets
+                .Include(p => p.Customer)
+                .ToListAsync();
         }
 
-        public bool UpdatePet(Pet pet)
+        public async Task<bool> UpdatePetAsync(Pet pet)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var existingPet = await _DbContext.Pets.FindAsync(pet.PetId);
+                if (existingPet != null)
+                {
+                    _DbContext.Entry(existingPet).CurrentValues.SetValues(pet);
+                    await _DbContext.SaveChangesAsync();
+                    return true;
+                }
+                return false;
+            }
+            catch
+            {
+                Console.WriteLine($"Lỗi, không thể cập nhật: ");
+                return false;
+            }
         }
     }
 }

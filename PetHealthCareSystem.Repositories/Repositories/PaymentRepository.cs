@@ -1,4 +1,5 @@
-﻿using PetHealthCareSystem.Repositories.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using PetHealthCareSystem.Repositories.Entities;
 using PetHealthCareSystem.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -10,29 +11,83 @@ namespace PetHealthCareSystem.Repositories.Repositories
 {
     public class PaymentRepository : IPaymentRepository
     {
-        public bool AddPayment(Payment payment)
+        private readonly PetHealthCareSystemContext _DbContext;
+        public PaymentRepository(PetHealthCareSystemContext dbcontext)
         {
-            throw new NotImplementedException();
+            _DbContext = dbcontext;
+        }
+        public async Task<bool> AddPaymentAsync(Payment payment)
+        {
+            try
+            {
+                await _DbContext.Payments.AddAsync(payment);
+                await _DbContext.SaveChangesAsync();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
-        public bool DelPayment(int id)
+        public async Task<bool> DelPaymentAsync(int id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var objDel = await _DbContext.Payments.FindAsync(id);
+                if (objDel != null)
+                {
+                    _DbContext.Payments.Remove(objDel);
+                    await _DbContext.SaveChangesAsync();
+                    return true;
+                }
+                return false;
+            }
+            catch(Exception ex)
+            {
+                throw new InvalidOperationException($"Errol Delete Payment: {ex.Message}", ex);
+            }
         }
 
-        public bool DelPayment(Payment payment)
+        public async Task<bool> DelPaymentAsync(Payment payment)
         {
-            throw new NotImplementedException();
+            try
+            {
+                _DbContext.Payments.Remove(payment);
+                await _DbContext.SaveChangesAsync();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
-        public Task<List<Payment>> GetAllPayment()
+        public async Task<List<Payment>> GetAllPaymentAsync()
         {
-            throw new NotImplementedException();
+            return await _DbContext.Payments
+                .Include(p => p.Booking)
+                .ToListAsync();
         }
 
-        public bool UpdatePayment(Payment payment)
+        public async Task<bool> UpdatePaymentAsync(Payment payment)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var existingPayment = await _DbContext.Payments.FindAsync(payment.PaymentId);
+                if (existingPayment != null)
+                {
+                    _DbContext.Entry(existingPayment).CurrentValues.SetValues(payment);
+                    await _DbContext.SaveChangesAsync();
+                    return true;
+                }
+                return false;
+            }
+            catch
+            {
+                Console.WriteLine($"Lỗi, không thể cập nhật: ");
+                return false;
+            }
         }
     }
 }

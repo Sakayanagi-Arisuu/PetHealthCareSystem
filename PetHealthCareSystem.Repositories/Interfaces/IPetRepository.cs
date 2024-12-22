@@ -11,7 +11,7 @@ namespace PetHealthCareSystem.Repositories.Interfaces
     {
         Task<List<Pet>> GetAllPetAsync();
         Task<bool> DelPetAsync (int id);
-        Task<bool> DeletePetAsync (Pet pet);
+        Task<bool> DelPetAsync(Pet pet);
         Task<bool> UpdatePetAsync (Pet pet);
         Task<bool> AddPetAsync (Pet pet);
     }

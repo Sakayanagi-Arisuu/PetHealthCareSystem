@@ -1,4 +1,5 @@
-﻿using PetHealthCareSystem.Repositories.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using PetHealthCareSystem.Repositories.Entities;
 using PetHealthCareSystem.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -10,29 +11,81 @@ namespace PetHealthCareSystem.Repositories.Repositories
 {
     public class HealProcessRepository : IHealProcessRepository
     {
-        public bool AddHealProcess(HealProcess healProcess)
+        private readonly PetHealthCareSystemContext _DbContext;
+        public HealProcessRepository(PetHealthCareSystemContext dbcontext)
         {
-            throw new NotImplementedException();
+            _DbContext = dbcontext;
+        }
+        public async Task<bool> AddHealProcessAsync(HealProcess healProcess)
+        {
+            try
+            {
+                await _DbContext.HealProcesses.AddAsync(healProcess);
+                await _DbContext.SaveChangesAsync();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
-        public bool DelHealProcess(HealProcess healProcess)
+        public async Task<bool> DelHealProcessAsync(HealProcess healProcess)
         {
-            throw new NotImplementedException();
+            try
+            {
+                _DbContext.HealProcesses.Remove(healProcess);
+                await _DbContext.SaveChangesAsync();
+                return true;
+            }
+            catch { return false; }
         }
 
-        public bool DelHealProcessbyId(int id)
+        public async Task<bool> DelHealProcessAsync(int id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var objDel = await _DbContext.HealProcesses.FindAsync(id);
+                if (objDel != null)
+                {
+                    _DbContext.HealProcesses.Remove(objDel);
+                    await _DbContext.SaveChangesAsync();
+                    return true;
+                }
+                return false;
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException($"Error deleting booking: {ex.Message}", ex);
+            }
         }
 
-        public Task<List<HealProcess>> GetAllHealProcess()
+        public async Task<List<HealProcess>> GetAllHealProcessAsync()
         {
-            throw new NotImplementedException();
+            return await _DbContext.HealProcesses
+                .Include(h => h.Pet)
+                .Include(h => h.Veterinarian)
+                .ToListAsync();
         }
 
-        public bool UpdateHealProcess(HealProcess healProcess)
+        public async Task<bool> UpdateHealProcessAsync(HealProcess healProcess)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var existingHealProcess = await _DbContext.Employees.FindAsync(healProcess.HealProcessId);
+                if (existingHealProcess != null)
+                {
+                    _DbContext.Entry(existingHealProcess).CurrentValues.SetValues(healProcess);
+                    await _DbContext.SaveChangesAsync();
+                    return true;
+                }
+                return false;
+            }
+            catch
+            {
+                Console.WriteLine($"Lỗi, không thể cập nhật: ");
+                return false;
+            }
         }
     }
 }
