@@ -1,4 +1,5 @@
-﻿using PetHealthCareSystem.Repositories.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using PetHealthCareSystem.Repositories.Entities;
 using PetHealthCareSystem.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -10,29 +11,82 @@ namespace PetHealthCareSystem.Repositories.Repositories
 {
     public class RoomRepository : IRoomRepository
     {
-        public bool AddRoom(Room room)
+        private readonly PetHealthCareSystemContext _DbContext;
+        public RoomRepository(PetHealthCareSystemContext dbcontext)
         {
-            throw new NotImplementedException();
+            _DbContext = dbcontext;
+        }
+        public async Task<bool> AddRoomAsync(Room room)
+        {
+            try
+            {
+                await _DbContext.Rooms.AddAsync(room);
+                await _DbContext.SaveChangesAsync();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
-        public bool DeleteRoom(Room room)
+        public async Task<bool> DelRoomAsync(int id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var objDel = await _DbContext.Rooms.FindAsync(id);
+                if (objDel != null)
+                {
+                    _DbContext.Rooms.Remove(objDel);
+                    await _DbContext.SaveChangesAsync();
+                    return true;
+                }
+                return false;
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException($"Errol Delete Room: {ex.Message}", ex);
+            }
         }
 
-        public bool DelRoom(int id)
+        public async Task<bool> DelRoomAsync(Room room)
         {
-            throw new NotImplementedException();
+            try
+            {
+                _DbContext.Rooms.Remove(room);
+                await _DbContext.SaveChangesAsync();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
-        public Task<List<Room>> GetAllRoom()
+        public async Task<List<Room>> GetAllRoomAsync()
         {
-            throw new NotImplementedException();
+            return await _DbContext.Rooms
+                .ToListAsync();
         }
 
-        public bool UpdateRoom(Room room)
+        public async Task<bool> UpdateRoomAsync(Room room)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var extRoom = await _DbContext.Rooms.FindAsync(room.RoomId);
+                if(extRoom != null)
+                {
+                    _DbContext.Entry(extRoom).CurrentValues.SetValues(room);
+                    await _DbContext.SaveChangesAsync();
+                    return true;
+                }
+                return false;
+            }
+            catch
+            {
+                Console.WriteLine($"Lỗi, không thể cập nhật: ");
+                return false;
+            }
         }
     }
 }

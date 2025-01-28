@@ -11,7 +11,7 @@ namespace PetHealthCareSystem.Repositories.Interfaces
     {
         Task<List<Room>> GetAllRoomAsync();
         Task<bool> DelRoomAsync(int id);
-        Task<bool> DeleteRoomAsync(Room room);
+        Task<bool> DelRoomAsync(Room room);
         Task<bool> AddRoomAsync (Room room);
         Task<bool> UpdateRoomAsync(Room room);
     }
